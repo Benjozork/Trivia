@@ -21,5 +21,5 @@ mode: random #random or command
 reward: money #money or items
 reward_amount: 15 #amount of money given
 reward_item_material: wood #item type given
-reward_item_count
+reward_item_count: 5
 delay: 60 #seconds
