@@ -1,0 +1,7 @@
+name: RamdomTrivia
+author: Benjozork
+version: 1.0
+main: me.benjozork.randomtrivia.RandomTrivia
+commands:
+    trivia:
+        pemrission: randomtrivia.answer

@@ -1,0 +1,25 @@
+questions:
+   - '1 plus 1 equals ?'
+   - '6 minus 3 equals ?'
+   - 'Who is the best programmer in the world ?'
+answers:
+   - '%CONTAINS 2 %OR two !ignorecase'
+   - '%CONTAINS 3 %OR three !ignorecase'
+   - '%CONTAINS Benjozork !ignorecase'
+messages:
+   no_question_active: '&cNo question is active right now.'
+   plugin_info: '&b[ RandomTrivia &b]&r &e1.0&r by &eBenjozork'
+   question_prefix: '&bThe question is: &a '
+   question_suffix: ''
+   answer_incorrect: '&4Sorry, wrong answer!'
+   answer_correct: '&aCorrect!'
+   answer_correct_broadcast: '&a%PLAYER% got the answer in %TIME%!'
+   reward_won: '&aCongrats! you won '
+   money_name: '$'
+
+mode: random #random or command
+reward: money #money or items
+reward_amount: 15 #amount of money given
+reward_item_material: wood #item type given
+reward_item_count
+delay: 60 #seconds
