@@ -1,7 +1,9 @@
 package me.benjozork.randomtrivia;
 
+import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.command.CommandSender;
+import org.bukkit.configuration.file.FileConfiguration;
 
 /**
  Looks like you decompiled my code :) Don't worry, you have to right to do so.
@@ -17,7 +19,7 @@ import org.bukkit.command.CommandSender;
 
  The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
 
- *THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND,
+ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND,
  EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
  FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT
  HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF
@@ -28,12 +30,26 @@ import org.bukkit.command.CommandSender;
 public class Utils {
 
     private RandomTrivia main;
+    private String prefix;
 
-    public Utils(RandomTrivia instance) {
-        this.main = instance;
+    public Utils(RandomTrivia main) {
+        this.main = main;
+        prefix = main.getConfig().getString("messages.global_prefix");
     }
 
-    public void sendMessage(CommandSender s, String path) {
-        s.sendMessage(ChatColor.translateAlternateColorCodes('&', main.getConfig().getString("messages." + path)));
+    public void sendConfigMessage(String path, CommandSender sender) {
+        sender.sendMessage(ChatColor.translateAlternateColorCodes('&', prefix + main.getConfig().getString("messages." + path)));
+    }
+
+    public void broadcastConfigMessage(String path) {
+        Bukkit.broadcastMessage(ChatColor.translateAlternateColorCodes('&', prefix + main.getConfig().getString("messages." + path)));
+    }
+
+    public void broadcastConfigMessage(String path, String append) {
+        Bukkit.broadcastMessage(ChatColor.translateAlternateColorCodes('&', prefix + main.getConfig().getString("messages." + path) + append));
+    }
+
+    public FileConfiguration getConfig() {
+        return main.getConfig();
     }
 }

@@ -1,5 +1,11 @@
 package me.benjozork.randomtrivia;
 
+import org.bukkit.Bukkit;
+import org.bukkit.command.CommandSender;
+import org.bukkit.entity.Player;
+
+import java.util.Objects;
+
 /**
  Looks like you decompiled my code :) Don't worry, you have to right to do so.
 
@@ -14,7 +20,7 @@ package me.benjozork.randomtrivia;
 
  The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
 
- *THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND,
+ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND,
  EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
  FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT
  HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF
@@ -24,28 +30,70 @@ package me.benjozork.randomtrivia;
 
 public class QuestionHandler {
 
-    private String question;
+    private RandomTrivia main;
+    private Utils utils;
+
     private String answer;
-    private int delay;
+    private String question;
+    private String prefix;
+
     private boolean questionActive;
+    private String last_winner;
+    private boolean equals_mode = false;
 
-    private Utils utils = new Utils(RandomTrivia.getInstance());
+    public QuestionHandler(RandomTrivia i) {
+        this.main = i;
+        this.utils = new Utils(i);
+        prefix = i.getConfig().getString("messages.global_prefix");
+    }
 
-    public String getQuestion() {
-        return question;
+    public void startQuestion(String q, String a) {
+        if (Objects.equals(last_winner, "")) {
+            utils.broadcastConfigMessage("no_winner");
+            if (answer != null) {
+                utils.broadcastConfigMessage("answer_was", answer.replaceAll("!EQUALS", ""));
+            }
+        }
+
+        last_winner = "";
+
+        this.answer = a;
+        this.question = q;
+        this.questionActive = true;
+        this.equals_mode = false;
+
+        utils.broadcastConfigMessage("question_starting");
+        utils.broadcastConfigMessage("question_is", question);
+    }
+
+
+
+    public void winQuestion(CommandSender sender) {
+        last_winner = sender.getName();
+        utils.sendConfigMessage("answer_correct", sender);
+        utils.broadcastConfigMessage("winner_is", sender.getName());
+        utils.broadcastConfigMessage("answer_was", answer);
+
+        if (sender instanceof Player) {
+            Bukkit.dispatchCommand(Bukkit.getConsoleSender(),
+                    utils.getConfig().getString("command").replaceAll("%PLAYER%", sender.getName()));
+        }
+
+        this.questionActive = false;
+    }
+
+    public void loseQuestion(CommandSender sender) {
+        utils.sendConfigMessage("answer_incorrect", sender);
     }
 
     public boolean isCorrect(String a) {
-        return this.answer.equalsIgnoreCase(a);
-    }
-
-    public void startQuestion(String q, String a, int d) {
-        this.question = q;
-        this.answer = a;
-        this.delay = d;
-        this.questionActive = true;
-
-
+        if (answer.startsWith("!EQUALS") || equals_mode) {
+            if (!equals_mode) answer = answer.substring(7);
+            equals_mode = true;
+            return answer.equalsIgnoreCase(a);
+        } else {
+            return a.equalsIgnoreCase(answer) || a.contains(answer);
+        }
     }
 
     public boolean isQuestionActive() {
