@@ -1,4 +1,4 @@
-## Config by RandomTrivia 1.0
+## Config by RandomTrivia 1.0, by Benjozork
 
 questions: # List of questions.
     - 'what year is it ?'
@@ -24,4 +24,4 @@ messages: # All the plugin messages.
     answer_was: '&aThe answer was: &b'
 
 interval: 60 # in seconds
-minimum_players: 4 # minimum players needed for questions to be broadcasted
+minimum_players: 4 # minimum players needed for questions to be broadcasted.
