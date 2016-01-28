@@ -11,7 +11,7 @@ command: 'give %PLAYER% apple 27' # The command to execute when a player wins a 
 messages: # All the plugin messages.
     plugin_info: 'by &eBenjozork'
     global_prefix: '&b[Trivia]&r '
-    question_starting: '&aQuestion startinfgfdgdfgdfg!'
+    question_starting: '&aQuestion starting!'
     question_is: '&aThe question is: &b'
     no_question: '&cNo question is active right now.'
     answer_correct: '&aCorrect!'
