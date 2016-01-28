@@ -30,21 +30,17 @@ import java.util.Objects;
 
 public class QuestionHandler {
 
-    private RandomTrivia main;
     private Utils utils;
 
     private String answer;
     private String question;
-    private String prefix;
 
     private boolean questionActive;
     private String last_winner;
     private boolean equals_mode = false;
 
     public QuestionHandler(RandomTrivia i) {
-        this.main = i;
         this.utils = new Utils(i);
-        prefix = i.getConfig().getString("messages.global_prefix");
     }
 
     public void startQuestion(String q, String a) {

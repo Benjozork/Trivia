@@ -1,20 +1,17 @@
-## Config by RandomTrivia 1.0, by Benjozork
+## Config for RandomTrivia 1.0, made by Benjozork
 
 questions: # List of questions.
-    - 'what year is it ?'
-    - 'test'
-    - 'a'
+    - 'What year is it ?'
+
 answers: # List of answers, must be in the same order as the questions.
     - '2016'
-    - '!EQUALSb'
-    - 'c'
 
 command: 'give %PLAYER% apple 27' # The command to execute when a player wins a question.
 
 messages: # All the plugin messages.
     plugin_info: 'by &eBenjozork'
     global_prefix: '&b[Trivia]&r '
-    question_starting: '&aQuestion starting!'
+    question_starting: '&aQuestion startinfgfdgdfgdfg!'
     question_is: '&aThe question is: &b'
     no_question: '&cNo question is active right now.'
     answer_correct: '&aCorrect!'
@@ -23,5 +20,5 @@ messages: # All the plugin messages.
     no_winner: '&cNo winner in allowed time.'
     answer_was: '&aThe answer was: &b'
 
-interval: 60 # in seconds
-minimum_players: 4 # minimum players needed for questions to be broadcasted.
+interval: 10 # in seconds
+minimum_players: 0 # minimum players needed for questions to be broadcasted.

@@ -42,9 +42,8 @@ public class RandomTrivia extends JavaPlugin {
         Bukkit.getScheduler().runTaskTimer(this, new Runnable() {
             @Override
             public void run() {
-
                 if (getConfig().getInt("minimum_players") <= getServer().getOnlinePlayers().size()) {
-                    if (question_index > getConfig().getStringList("questions").size() - 1) {
+                    if (question_index > getConfig().getStringList("questions").size() - 1 || question_index > getConfig().getStringList("answers").size() - 1) {
                         question_index = 0;
                     }
                     qh.startQuestion(getConfig().getStringList("questions").get(question_index), getConfig().getStringList("answers").get(question_index));
