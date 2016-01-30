@@ -4,8 +4,6 @@ import org.bukkit.Bukkit;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
-import java.util.Objects;
-
 /**
  Looks like you decompiled my code :) Don't worry, you have to right to do so.
 
@@ -31,6 +29,7 @@ import java.util.Objects;
 public class QuestionHandler {
 
     private Utils utils;
+    private RandomTrivia main;
 
     private String answer;
     private String question;
@@ -41,12 +40,15 @@ public class QuestionHandler {
 
     public QuestionHandler(RandomTrivia i) {
         this.utils = new Utils(i);
+        this.main = i;
     }
 
     public void startQuestion(String q, String a) {
-        if (Objects.equals(last_winner, "")) {
+        // If there is now winner (first question broadcasted)
+        if (last_winner.equals("")) {
             utils.broadcastConfigMessage("no_winner");
-            if (answer != null) {
+            // If we broadcast the answer, depending of if there was one and if it is enabled in the config
+            if (answer != null && main.getConfig().getBoolean("give_answer")) {
                 utils.broadcastConfigMessage("answer_was", answer.replaceAll("!EQUALS", ""));
             }
         }

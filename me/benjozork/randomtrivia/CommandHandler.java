@@ -30,10 +30,12 @@ public class CommandHandler implements CommandExecutor {
 
     private final QuestionHandler qh;
     private Utils utils;
+    private RandomTrivia main;
 
 
     public CommandHandler(RandomTrivia i, QuestionHandler qh) {
         this.qh = qh;
+        this.main = i;
         this.utils = new Utils(i);
     }
 
@@ -42,6 +44,11 @@ public class CommandHandler implements CommandExecutor {
         if (label.equalsIgnoreCase("trivia")) {
             if (args.length == 0) {
                 utils.sendConfigMessage("plugin_info", sender);
+                return true;
+            }
+
+            if (args[0].equals("reload")) {
+                main.reloadConfig();
                 return true;
             }
 

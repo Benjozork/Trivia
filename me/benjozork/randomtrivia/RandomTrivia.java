@@ -36,7 +36,10 @@ public class RandomTrivia extends JavaPlugin {
     @Override
     public void onEnable() {
         saveDefaultConfig();
+        getConfig().options().copyDefaults(true);
+
         log.info("[RandomTrivia] Enabled successfully.");
+
         getCommand("trivia").setExecutor(new CommandHandler(this, qh));
 
         Bukkit.getScheduler().runTaskTimer(this, new Runnable() {
@@ -50,12 +53,11 @@ public class RandomTrivia extends JavaPlugin {
                     question_index++;
                 }
             }
-        }, 0, getConfig().getLong("interval") * 20);
+        }, 0, getConfig().getLong("delay") * 20);
     }
 
     @Override
     public void onDisable() {
         log.info("[RandomTrivia] Disabled successfully.");
     }
-
 }

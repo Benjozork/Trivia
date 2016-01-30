@@ -20,5 +20,6 @@ messages: # All the plugin messages.
     no_winner: '&cNo winner in allowed time.'
     answer_was: '&aThe answer was: &b'
 
-interval: 10 # in seconds
-minimum_players: 0 # minimum players needed for questions to be broadcasted.
+delay: 60 # Time given to asnwer a question
+minimum_players: 0 # Minimum players needed for questions to be broadcasted.
+give_answer: true # If the answer is broadcasted to the players when the delay expires.
