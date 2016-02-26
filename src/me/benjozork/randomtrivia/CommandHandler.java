@@ -1,5 +1,6 @@
 package me.benjozork.randomtrivia;
 
+import me.benjozork.randomtrivia.utils.Utils;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
@@ -30,10 +31,10 @@ public class CommandHandler implements CommandExecutor {
 
     private final QuestionHandler qh;
     private Utils utils;
-    private RandomTrivia main;
+    private Trivia main;
 
 
-    public CommandHandler(RandomTrivia i, QuestionHandler qh) {
+    public CommandHandler(Trivia i, QuestionHandler qh) {
         this.qh = qh;
         this.main = i;
         this.utils = new Utils(i);
@@ -41,14 +42,20 @@ public class CommandHandler implements CommandExecutor {
 
     @Override
     public boolean onCommand(CommandSender sender, Command cmd, String label, String[] args) {
-        if (label.equalsIgnoreCase("trivia")) {
             if (args.length == 0) {
                 utils.sendConfigMessage("plugin_info", sender);
                 return true;
             }
 
-            if (args[0].equals("reload")) {
-                main.reloadConfig();
+            if (args[0].equalsIgnoreCase("top") && args.length == 1) {
+                utils.sendConfigMessage("top_players_header", sender);
+                utils.displayTopPlayersTable(sender);
+                return true;
+            }
+
+            if ((args[0].equalsIgnoreCase("reload") || args[0].equalsIgnoreCase("rl")) && args.length == 1) {
+                main.reloadConfigs();
+                utils.sendConfigMessage("reload_complete", sender);
                 return true;
             }
 
@@ -62,16 +69,14 @@ public class CommandHandler implements CommandExecutor {
                     }
                 }
 
-                if (qh.isCorrect(sb.toString())) {
+                /*if (qh.isCorrect(sb.toString())) {
                     qh.winQuestion(sender);
                 } else {
                     qh.loseQuestion(sender);
-                }
+                }*/
             } else {
                 utils.sendConfigMessage("no_question", sender);
             }
-
-        }
         return false;
     }
 }

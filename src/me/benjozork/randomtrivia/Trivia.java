@@ -1,8 +1,12 @@
 package me.benjozork.randomtrivia;
 
+import me.benjozork.randomtrivia.utils.ConfigAccessor;
+import me.benjozork.randomtrivia.utils.Utils;
 import org.bukkit.Bukkit;
 import org.bukkit.plugin.java.JavaPlugin;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.logging.Logger;
 
 /**
@@ -27,29 +31,52 @@ import java.util.logging.Logger;
  THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  **/
 
-public class RandomTrivia extends JavaPlugin {
+public class Trivia extends JavaPlugin {
 
     Logger log = Logger.getLogger("Minecraft");
-    QuestionHandler qh = new QuestionHandler(this);
+    private QuestionHandler question_handler = new QuestionHandler(this);
+    private ConfigAccessor questions_config = new ConfigAccessor(this, "questions.yml");
+    private ConfigAccessor player_data = new ConfigAccessor(this, "data.yml");
+    private Utils utils = new Utils(this);
+
     private int question_index;
+    private List<List<String>> answers = new ArrayList<>();
 
     @Override
     public void onEnable() {
         saveDefaultConfig();
+        questions_config.saveDefaultConfig();
+        player_data.saveDefaultConfig();
+
         getConfig().options().copyDefaults(true);
 
-        log.info("[RandomTrivia] Enabled successfully.");
+        log.info("[Trivia] Enabled successfully.");
 
-        getCommand("trivia").setExecutor(new CommandHandler(this, qh));
+        getCommand("trivia").setExecutor(new CommandHandler(this, question_handler));
+
 
         Bukkit.getScheduler().runTaskTimer(this, new Runnable() {
             @Override
             public void run() {
+                answers = new ArrayList<>();
                 if (getConfig().getInt("minimum_players") <= getServer().getOnlinePlayers().size()) {
-                    if (question_index > getConfig().getStringList("questions").size() - 1 || question_index > getConfig().getStringList("answers").size() - 1) {
+                    if (question_index > questions_config.getConfig().getStringList("questions").size() - 1 || question_index > questions_config.getConfig().getList("answers").size() - 1) {
                         question_index = 0;
                     }
-                    qh.startQuestion(getConfig().getStringList("questions").get(question_index), getConfig().getStringList("answers").get(question_index));
+
+                    for (int i = 0; i < questions_config.getConfig().getStringList("answers").size(); i++) {
+                        answers.add (
+                                utils.processAnswerTable(questions_config.getConfig()
+                                .getStringList("answers").get(i))
+                        );
+                    }
+
+                    question_handler.startQuestion (
+                            questions_config.getConfig().getStringList("questions").get(question_index),
+                            answers.get(question_index)
+                    );
+
+
                     question_index++;
                 }
             }
@@ -58,6 +85,16 @@ public class RandomTrivia extends JavaPlugin {
 
     @Override
     public void onDisable() {
-        log.info("[RandomTrivia] Disabled successfully.");
+        log.info("[Trivia] Disabled successfully.");
+    }
+
+    public ConfigAccessor getDataConfig() {
+        return player_data;
+    }
+
+    public void reloadConfigs() {
+        reloadConfig();
+        questions_config.reloadConfig();
+        player_data.reloadConfig();
     }
 }

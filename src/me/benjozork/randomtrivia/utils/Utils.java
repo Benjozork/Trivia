@@ -1,9 +1,16 @@
-package me.benjozork.randomtrivia;
+package me.benjozork.randomtrivia.utils;
 
+import me.benjozork.randomtrivia.Trivia;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.command.CommandSender;
-import org.bukkit.configuration.file.FileConfiguration;
+import org.bukkit.entity.Player;
+
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.stream.Collectors;
 
 /**
  Looks like you decompiled my code :) Don't worry, you have to right to do so.
@@ -29,11 +36,13 @@ import org.bukkit.configuration.file.FileConfiguration;
 
 public class Utils {
 
-    private RandomTrivia main;
+    private Trivia main;
+    private ConfigAccessor data;
     private String prefix;
 
-    public Utils(RandomTrivia main) {
+    public Utils(Trivia main) {
         this.main = main;
+        this.data = main.getDataConfig();
         prefix = main.getConfig().getString("messages.global_prefix");
     }
 
@@ -49,7 +58,48 @@ public class Utils {
         Bukkit.broadcastMessage(ChatColor.translateAlternateColorCodes('&', prefix + main.getConfig().getString("messages." + path) + append));
     }
 
-    public FileConfiguration getConfig() {
-        return main.getConfig();
+    public List<String> processAnswerTable(String ls) {
+        List<String> result = new ArrayList<>();
+
+        ls = ls.replace("[", "");
+        ls = ls.replace("]", "");
+
+        for (String s : ls.split(",")) {
+            result.add(s.trim());
+        }
+
+        return result;
+    }
+
+    public void displayTopPlayersTable(CommandSender sender) {
+        HashMap<String, Integer> player_data = new HashMap<>();
+
+        for (String s : data.getConfig().getKeys(false)) {
+            player_data.put(s, data.getConfig().getInt(s));
+        }
+
+        final List<String> sorted_players = player_data.entrySet().stream()
+                .sorted((e1, e2) -> e2.getValue().compareTo(e1.getValue()))
+                .map(Map.Entry::getKey)
+                .collect(Collectors.toList());
+
+        int count = 1;
+        for (String s : sorted_players) {
+            if (count > 10) return;
+            sender.sendMessage (
+                    "       "
+                    + ChatColor.GREEN
+                    + "#"
+                    + count
+                    + ": "
+                    + ChatColor.AQUA
+                    + s
+                    + ChatColor.GREEN
+                    + " ("
+                    + player_data.get(s)
+                    + ")"
+            );
+            count++;
+        }
     }
 }

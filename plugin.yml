@@ -1,8 +1,0 @@
-name: RandomTrivia
-author: Benjozork
-version: 1.0
-main: me.benjozork.randomtrivia.RandomTrivia
-commands:
-    trivia:
-        permission: trivia.answer
-        description: Answer the trivia question.
