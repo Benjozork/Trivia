@@ -1,2 +1,2 @@
-# RandomTrivia
+# Trivia
 Plugin requested by Citrus :)
