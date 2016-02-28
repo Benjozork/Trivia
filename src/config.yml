@@ -3,7 +3,7 @@
 command: 'give %PLAYER% apple 27' # The command to execute when a player wins a question.
 
 messages: # All the plugin messages.
-    plugin_info: '&bby &eBenjozork'
+    plugin_info: '&aTrivia version 1.1 by &bBenjozork'
     global_prefix: '&b[Trivia]&r '
     question_starting: '&aQuestion starting!'
     question_is: '&aThe question is: &b'
@@ -19,5 +19,5 @@ messages: # All the plugin messages.
 
 delay: 60 # Time given to asnwer a question
 minimum_players: 0 # Minimum players needed for questions to be broadcasted.
-give_answer: false # If the ansll the possible answers are broadcasted.wer is broadcasted to the players when the delay expires.
-                                                                      give_all_answers: false # If a
+give_answer: false # If the answer(s) are broadcasted when a question is won.
+give_all_answers: false # If all the possible answers are broadcasted.

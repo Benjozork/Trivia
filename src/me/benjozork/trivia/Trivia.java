@@ -1,7 +1,8 @@
-package me.benjozork.randomtrivia;
+package me.benjozork.trivia;
 
-import me.benjozork.randomtrivia.utils.ConfigAccessor;
-import me.benjozork.randomtrivia.utils.Utils;
+import me.benjozork.trivia.utils.ConfigAccessor;
+import me.benjozork.trivia.utils.Utils;
+
 import org.bukkit.Bukkit;
 import org.bukkit.plugin.java.JavaPlugin;
 
@@ -85,6 +86,7 @@ public class Trivia extends JavaPlugin {
 
     @Override
     public void onDisable() {
+        player_data.saveConfig();
         log.info("[Trivia] Disabled successfully.");
     }
 

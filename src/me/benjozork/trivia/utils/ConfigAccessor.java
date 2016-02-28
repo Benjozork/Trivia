@@ -1,4 +1,4 @@
-package me.benjozork.randomtrivia.utils;
+package me.benjozork.trivia.utils;
 
 /*
 * Copyright (C) 2012

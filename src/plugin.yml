@@ -1,7 +1,7 @@
 name: Trivia
 author: Benjozork
 version: '1.1 dev'
-main: me.benjozork.randomtrivia.Trivia
+main: me.benjozork.trivia.Trivia
 commands:
     trivia:
         permission: trivia.answer

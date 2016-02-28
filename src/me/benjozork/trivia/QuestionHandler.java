@@ -1,6 +1,6 @@
-package me.benjozork.randomtrivia;
+package me.benjozork.trivia;
 
-import me.benjozork.randomtrivia.utils.Utils;
+import me.benjozork.trivia.utils.Utils;
 import org.bukkit.Bukkit;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
@@ -120,8 +120,9 @@ public class QuestionHandler {
                 main.getDataConfig().getConfig().set (
                         cast_sender_uuid.toString(),
                         main.getDataConfig().getConfig().getInt(cast_sender_uuid.toString()) + 1
-                        );
+                );
             }
+            main.getDataConfig().saveConfig();
         }
 
         this.questionActive = false;
@@ -131,15 +132,12 @@ public class QuestionHandler {
         utils.sendConfigMessage("answer_incorrect", sender);
     }
 
-    /* public boolean isCorrect(List<String> a) {
-        if (answer.startsWith("!EQUALS") || equals_mode) {
-            if (!equals_mode) answer = answer.substring(7);
-            equals_mode = true;
-            return answer.equalsIgnoreCase(a);
-        } else {
-            return a.equalsIgnoreCase(answer) || a.contains(answer);
+    public boolean isCorrect(String a) {
+        for (String s : answers) {
+            if (a.contains(s)) return true;
         }
-    } */
+        return false;
+    }
 
     public boolean isQuestionActive() {
         return questionActive;

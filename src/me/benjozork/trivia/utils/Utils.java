@@ -1,15 +1,12 @@
-package me.benjozork.randomtrivia.utils;
+package me.benjozork.trivia.utils;
 
-import me.benjozork.randomtrivia.Trivia;
+import me.benjozork.trivia.Trivia;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
+import org.bukkit.command.CommandException;
 import org.bukkit.command.CommandSender;
-import org.bukkit.entity.Player;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import java.util.stream.Collectors;
 
 /**
@@ -85,6 +82,12 @@ public class Utils {
 
         int count = 1;
         for (String s : sorted_players) {
+            String player_name;
+            try {
+                player_name = Bukkit.getServer().getPlayer(UUID.fromString(s)).getName();
+            } catch (Exception e) {
+                player_name = s;
+            }
             if (count > 10) return;
             sender.sendMessage (
                     "       "
@@ -93,7 +96,7 @@ public class Utils {
                     + count
                     + ": "
                     + ChatColor.AQUA
-                    + s
+                    + player_name
                     + ChatColor.GREEN
                     + " ("
                     + player_data.get(s)

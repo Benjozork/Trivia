@@ -1,6 +1,6 @@
-package me.benjozork.randomtrivia;
+package me.benjozork.trivia;
 
-import me.benjozork.randomtrivia.utils.Utils;
+import me.benjozork.trivia.utils.Utils;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
@@ -60,20 +60,14 @@ public class CommandHandler implements CommandExecutor {
             }
 
             if (qh.isQuestionActive()) {
-                StringBuilder sb = new StringBuilder();
-                for (int i = 0; i < args.length; i++) {
-                    if (i > 0) {
-                        sb.append(" " + args[i]);
-                    } else {
-                        sb.append(args[i]);
-                    }
-                }
+                String answer = "";
+                for (String s : args) answer += (" " + s);
 
-                /*if (qh.isCorrect(sb.toString())) {
+                if (qh.isCorrect(answer)) {
                     qh.winQuestion(sender);
                 } else {
                     qh.loseQuestion(sender);
-                }*/
+                }
             } else {
                 utils.sendConfigMessage("no_question", sender);
             }
