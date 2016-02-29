@@ -55,7 +55,6 @@ public class Trivia extends JavaPlugin {
 
         getCommand("trivia").setExecutor(new CommandHandler(this, question_handler));
 
-
         Bukkit.getScheduler().runTaskTimer(this, new Runnable() {
             @Override
             public void run() {

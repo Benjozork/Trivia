@@ -88,7 +88,7 @@ public class Utils {
             } catch (Exception e) {
                 player_name = s;
             }
-            if (count > 10) return;
+            if (count > main.getConfig().getInt("max_leaderboard_entries")) return;
             sender.sendMessage (
                     "       "
                     + ChatColor.GREEN

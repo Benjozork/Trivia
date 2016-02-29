@@ -1,4 +1,4 @@
-## Config for Trivia 1.1, made by Benjozork
+## Config for Trivia 1.1, made by Benjozork.
 
 command: 'give %PLAYER% apple 27' # The command to execute when a player wins a question.
 
@@ -17,7 +17,8 @@ messages: # All the plugin messages.
     reload_complete: '&aReload complete.'
     top_players_header: '&aTop Trivia winners:'
 
-delay: 60 # Time given to asnwer a question
+delay: 60 # Time given to asnwer a question.
 minimum_players: 0 # Minimum players needed for questions to be broadcasted.
+max_leaderboard_entries: 10 # How many leaderboard entries are shown.
 give_answer: false # If the answer(s) are broadcasted when a question is won.
 give_all_answers: false # If all the possible answers are broadcasted.
