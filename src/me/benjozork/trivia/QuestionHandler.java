@@ -1,6 +1,7 @@
 package me.benjozork.trivia;
 
 import me.benjozork.trivia.utils.Utils;
+
 import org.bukkit.Bukkit;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
@@ -134,7 +135,7 @@ public class QuestionHandler {
 
     public boolean isCorrect(String a) {
         for (String s : answers) {
-            if (a.contains(s)) return true;
+            if (a.toLowerCase().contains(s.toLowerCase())) return true;
         }
         return false;
     }

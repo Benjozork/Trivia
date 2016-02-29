@@ -53,7 +53,7 @@ public class Trivia extends JavaPlugin {
 
         log.info("[Trivia] Enabled successfully.");
 
-        getCommand("trivia").setExecutor(new CommandHandler(this, question_handler));
+        getCommand("trivia").setExecutor(new CommandHandler(this));
 
         Bukkit.getScheduler().runTaskTimer(this, new Runnable() {
             @Override
@@ -89,13 +89,17 @@ public class Trivia extends JavaPlugin {
         log.info("[Trivia] Disabled successfully.");
     }
 
-    public ConfigAccessor getDataConfig() {
-        return player_data;
-    }
-
     public void reloadConfigs() {
         reloadConfig();
         questions_config.reloadConfig();
         player_data.reloadConfig();
+    }
+
+    public QuestionHandler getQuestionHandler() {
+        return question_handler;
+    }
+
+    public ConfigAccessor getDataConfig() {
+        return player_data;
     }
 }

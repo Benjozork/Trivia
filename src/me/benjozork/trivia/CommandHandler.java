@@ -1,6 +1,7 @@
 package me.benjozork.trivia;
 
 import me.benjozork.trivia.utils.Utils;
+
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
@@ -34,8 +35,8 @@ public class CommandHandler implements CommandExecutor {
     private Trivia main;
 
 
-    public CommandHandler(Trivia i, QuestionHandler qh) {
-        this.qh = qh;
+    public CommandHandler(Trivia i) {
+        this.qh = i.getQuestionHandler();
         this.main = i;
         this.utils = new Utils(i);
     }
@@ -48,16 +49,29 @@ public class CommandHandler implements CommandExecutor {
             }
 
             if (args[0].equalsIgnoreCase("top") && args.length == 1) {
+                if (!sender.hasPermission("trivia.top")) {
+                    utils.sendConfigMessage("permission.no_permission_top", sender);
+                    return false;
+                }
                 utils.sendConfigMessage("top_players_header", sender);
                 utils.displayTopPlayersTable(sender);
                 return true;
             }
 
             if ((args[0].equalsIgnoreCase("reload") || args[0].equalsIgnoreCase("rl")) && args.length == 1) {
+                if (!sender.hasPermission("trivia.reload")) {
+                    utils.sendConfigMessage("permission.no_permission_reload", sender);
+                    return false;
+                }
                 main.reloadConfigs();
                 utils.sendConfigMessage("reload_complete", sender);
                 return true;
             }
+
+        if (!sender.hasPermission("trivia.answer")) {
+            utils.sendConfigMessage("permission.no_permission_answer", sender);
+            return false;
+        }
 
             if (qh.isQuestionActive()) {
                 String answer = "";

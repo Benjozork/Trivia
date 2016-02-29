@@ -5,6 +5,10 @@ command: 'give %PLAYER% apple 27' # The command to execute when a player wins a 
 messages: # All the plugin messages.
     plugin_info: '&aTrivia version 1.1 by &bBenjozork'
     global_prefix: '&b[Trivia]&r '
+    permission:
+        no_permission_answer: '&cYou have no pemrission to answer the questions!'
+        no_permission_top: '&cYou have no pemrission to view the leaderboard!'
+        no_permission_reload: '&cYou have no pemrission to relaod the configs!'
     question_starting: '&aQuestion starting!'
     question_is: '&aThe question is: &b'
     no_question: '&cNo question is active right now.'

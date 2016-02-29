@@ -4,7 +4,6 @@ version: '1.1 dev'
 main: me.benjozork.trivia.Trivia
 commands:
     trivia:
-        permission: trivia.answer
         description: Answer the trivia question.
         aliases: [tr]
 permissions:
@@ -12,3 +11,5 @@ permissions:
         description: Allows the player to answer the Trivia question.
     trivia.top:
         description: Allows the player to view the top Trivia players.
+    trivia.reload:
+        description: Allows the player to reload the Trivia config and data files.
