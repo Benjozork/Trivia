@@ -84,7 +84,7 @@ public class Utils {
         for (String s : sorted_players) {
             String player_name;
             try {
-                player_name = Bukkit.getServer().getPlayer(UUID.fromString(s)).getName();
+                player_name = Bukkit.getServer().getOfflinePlayer(UUID.fromString(s)).getName();
             } catch (Exception e) {
                 player_name = s;
             }

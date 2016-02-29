@@ -86,7 +86,7 @@ public class QuestionHandler {
         utils.sendConfigMessage("answer_correct", sender);
         utils.broadcastConfigMessage("winner_is", sender.getName());
 
-        if (answers != null && !main.getConfig().getBoolean("give_answer")) {
+        if (answers != null && main.getConfig().getBoolean("give_answer")) {
             if (main.getConfig().getBoolean("give_all_answers") && answers.size() > 1) {
                 StringBuilder sb = new StringBuilder();
                 for (int i = 0; i < answers.size() - 1; i++) {
