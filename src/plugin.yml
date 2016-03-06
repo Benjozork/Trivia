@@ -1,6 +1,6 @@
 name: Trivia
 author: Benjozork
-version: '1.1 dev'
+version: '1.1'
 main: me.benjozork.trivia.Trivia
 commands:
     trivia:
