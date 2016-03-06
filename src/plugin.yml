@@ -13,3 +13,5 @@ permissions:
         description: Allows the player to view the top Trivia players.
     trivia.reload:
         description: Allows the player to reload the Trivia config and data files.
+    trivia.toggle:
+        description: Allows the player to toggle the broadcasting of Trivia questions.
