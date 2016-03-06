@@ -43,12 +43,15 @@ public class CommandHandler implements CommandExecutor {
 
     @Override
     public boolean onCommand(CommandSender sender, Command cmd, String label, String[] args) {
-            if (args.length == 0) {
-                utils.sendConfigMessage("plugin_info", sender);
-                return true;
-            }
+        //No arguments, show plugin info
+        if (args.length == 0) {
+            utils.sendConfigMessage("plugin_info", sender);
+            return true;
+        }
 
-            if (args[0].equalsIgnoreCase("top") && args.length == 1) {
+        if (args.length == 1) { //Subcommand
+            //Leaderboard subcomamnd
+            if (args[0].equalsIgnoreCase("top")) {
                 if (!sender.hasPermission("trivia.top")) {
                     utils.sendConfigMessage("permission.no_permission_top", sender);
                     return false;
@@ -58,7 +61,8 @@ public class CommandHandler implements CommandExecutor {
                 return true;
             }
 
-            if ((args[0].equalsIgnoreCase("reload") || args[0].equalsIgnoreCase("rl")) && args.length == 1) {
+            //Reload subcommand
+            if ((args[0].equalsIgnoreCase("reload") || args[0].equalsIgnoreCase("rl"))) {
                 if (!sender.hasPermission("trivia.reload")) {
                     utils.sendConfigMessage("permission.no_permission_reload", sender);
                     return false;
@@ -68,23 +72,38 @@ public class CommandHandler implements CommandExecutor {
                 return true;
             }
 
+            //Toggle subcommand
+            if ((args[0].equalsIgnoreCase("toggle"))) {
+                if (!sender.hasPermission("trivia.toggle")) {
+                    utils.sendConfigMessage("permission.no_permission_toggle", sender);
+                    return false;
+                }
+                utils.sendConfigMessage(main.toggle(), sender);
+                return true;
+            }
+        }
+
+        //Not a subcommand, check for answer permission
         if (!sender.hasPermission("trivia.answer")) {
             utils.sendConfigMessage("permission.no_permission_answer", sender);
             return false;
         }
 
-            if (qh.isQuestionActive()) {
-                String answer = "";
-                for (String s : args) answer += (" " + s);
+        //Check if a question is active
+        if (qh.isQuestionActive()) {
+            //Build answer string from args
+            String answer = "";
+            for (String s : args) answer += (" " + s);
 
-                if (qh.isCorrect(answer)) {
-                    qh.winQuestion(sender);
-                } else {
-                    qh.loseQuestion(sender);
-                }
+            if (qh.isCorrect(answer)) {
+                qh.winQuestion(sender);
             } else {
-                utils.sendConfigMessage("no_question", sender);
+                qh.loseQuestion(sender);
             }
+        } else {
+            //No question is active
+            utils.sendConfigMessage("no_question", sender);
+        }
         return false;
     }
 }

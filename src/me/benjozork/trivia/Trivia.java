@@ -42,6 +42,7 @@ public class Trivia extends JavaPlugin {
 
     private int question_index;
     private List<List<String>> answers = new ArrayList<>();
+    private boolean enabled;
 
     @Override
     public void onEnable() {
@@ -52,6 +53,9 @@ public class Trivia extends JavaPlugin {
         getConfig().options().copyDefaults(true);
 
         log.info("[Trivia] Enabled successfully.");
+        if (getDescription().getVersion().contains("DEV")) {
+            log.info("[Trivia] Development version! Please send bug reports to GitHub!");
+        }
 
         getCommand("trivia").setExecutor(new CommandHandler(this));
 
@@ -59,7 +63,7 @@ public class Trivia extends JavaPlugin {
             @Override
             public void run() {
                 answers = new ArrayList<>();
-                if (getConfig().getInt("minimum_players") <= getServer().getOnlinePlayers().size()) {
+                if (getConfig().getInt("minimum_players") <= getServer().getOnlinePlayers().size() && enabled) {
                     if (question_index > questions_config.getConfig().getStringList("questions").size() - 1 || question_index > questions_config.getConfig().getList("answers").size() - 1) {
                         question_index = 0;
                     }
@@ -101,5 +105,10 @@ public class Trivia extends JavaPlugin {
 
     public ConfigAccessor getDataConfig() {
         return player_data;
+    }
+
+    public String toggle() {
+        enabled = !enabled;
+        if (enabled) return "toggle.enabled"; else return "toggle.disabled";
     }
 }

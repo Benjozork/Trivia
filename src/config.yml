@@ -1,4 +1,4 @@
-## Config for Trivia 1.1, made by Benjozork.
+## Config for Trivia 1.2, made by Benjozork.
 
 command: 'give %PLAYER% apple 27' # The command to execute when a player wins a question.
 
@@ -9,6 +9,10 @@ messages: # All the plugin messages.
         no_permission_answer: '&cYou have no pemrission to answer the questions!'
         no_permission_top: '&cYou have no pemrission to view the leaderboard!'
         no_permission_reload: '&cYou have no pemrission to relaod the configs!'
+        no_permission_toggle: '&cYou have no pemrission to toggle the questions!'
+    toggle:
+        enabled: '&aTrivia questions &2enabled.'
+        disabled: '&aTrivia questions &cdisabled.'
     question_starting: '&aQuestion starting!'
     question_is: '&aThe question is: &b'
     no_question: '&cNo question is active right now.'
