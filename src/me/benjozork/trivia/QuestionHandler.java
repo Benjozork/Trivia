@@ -37,11 +37,9 @@ public class QuestionHandler {
     private Trivia main;
 
     private List<String> answers;
-    private String question;
     private String last_winner = null;
 
     private boolean questionActive;
-    private boolean equals_mode = false;
 
     public QuestionHandler(Trivia i) {
         this.utils = new Utils(i);
@@ -69,15 +67,12 @@ public class QuestionHandler {
             }
         }
 
-        last_winner = null;
-
+        this.last_winner = null;
         this.answers = a;
-        this.question = q;
         this.questionActive = true;
-        this.equals_mode = false;
 
         utils.broadcastConfigMessage("question_starting");
-        utils.broadcastConfigMessage("question_is", question);
+        utils.broadcastConfigMessage("question_is", q);
     }
 
 
