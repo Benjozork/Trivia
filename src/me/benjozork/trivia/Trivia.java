@@ -1,6 +1,7 @@
 package me.benjozork.trivia;
 
 import me.benjozork.trivia.utils.ConfigAccessor;
+import me.benjozork.trivia.utils.TriviaPlaceholderHook;
 import me.benjozork.trivia.utils.Utils;
 
 import org.bukkit.Bukkit;
@@ -51,6 +52,10 @@ public class Trivia extends JavaPlugin {
         player_data.saveDefaultConfig();
 
         getConfig().options().copyDefaults(true);
+
+        if (Bukkit.getServer().getPluginManager().isPluginEnabled("PlaceholderAPI")) {
+            new TriviaPlaceholderHook(this).hook();
+        }
 
         log.info("[Trivia] Enabled successfully.");
         if (getDescription().getVersion().contains("DEV")) {
