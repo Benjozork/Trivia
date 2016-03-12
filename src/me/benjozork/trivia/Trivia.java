@@ -43,7 +43,7 @@ public class Trivia extends JavaPlugin {
 
     private int question_index;
     private List<List<String>> answers = new ArrayList<>();
-    private boolean enabled;
+    private boolean enabled = true;
 
     @Override
     public void onEnable() {
