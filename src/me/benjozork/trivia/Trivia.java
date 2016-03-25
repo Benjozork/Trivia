@@ -63,8 +63,7 @@ public class Trivia extends JavaPlugin {
         if (getDescription().getVersion().contains("DEV")) {
             log.info("[Trivia] Development version! Please send bug reports to GitHub!");
         }
-
-        System.out.println(PlaceholderAPI.setPlaceholders((Player) Bukkit.getOnlinePlayers().toArray()[0], "wins: %trivia_wins%"));
+        
         getCommand("trivia").setExecutor(new CommandHandler(this));
 
         Bukkit.getScheduler().runTaskTimer(this, new Runnable() {
