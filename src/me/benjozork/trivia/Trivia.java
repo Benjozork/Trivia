@@ -4,7 +4,9 @@ import me.benjozork.trivia.utils.ConfigAccessor;
 import me.benjozork.trivia.utils.TriviaPlaceholderHook;
 import me.benjozork.trivia.utils.Utils;
 
+import me.clip.placeholderapi.PlaceholderAPI;
 import org.bukkit.Bukkit;
+import org.bukkit.entity.Player;
 import org.bukkit.plugin.java.JavaPlugin;
 
 import java.util.ArrayList;
@@ -62,6 +64,7 @@ public class Trivia extends JavaPlugin {
             log.info("[Trivia] Development version! Please send bug reports to GitHub!");
         }
 
+        System.out.println(PlaceholderAPI.setPlaceholders((Player) Bukkit.getOnlinePlayers().toArray()[0], "wins: %trivia_wins%"));
         getCommand("trivia").setExecutor(new CommandHandler(this));
 
         Bukkit.getScheduler().runTaskTimer(this, new Runnable() {
