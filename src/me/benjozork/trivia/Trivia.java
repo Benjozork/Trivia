@@ -63,7 +63,7 @@ public class Trivia extends JavaPlugin {
         if (getDescription().getVersion().contains("DEV")) {
             log.info("[Trivia] Development version! Please send bug reports to GitHub!");
         }
-        
+
         getCommand("trivia").setExecutor(new CommandHandler(this));
 
         Bukkit.getScheduler().runTaskTimer(this, new Runnable() {
@@ -116,6 +116,6 @@ public class Trivia extends JavaPlugin {
 
     public String toggle() {
         enabled = !enabled;
-        if (enabled) return "toggle.enabled"; else return "toggle.disabled";
+        return enabled ? "toggle.enabled" : "toggle.disabled";
     }
 }
