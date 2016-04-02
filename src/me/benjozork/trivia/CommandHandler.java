@@ -5,6 +5,9 @@ import me.benjozork.trivia.utils.Utils;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
+import org.bukkit.entity.Player;
+
+import java.util.HashMap;
 
 /**
  Looks like you decompiled my code :) Don't worry, you have to right to do so.
@@ -33,6 +36,7 @@ public class CommandHandler implements CommandExecutor {
     private final QuestionHandler qh;
     private Utils utils;
     private Trivia main;
+    private HashMap<Player, Integer> attempts = new HashMap<>();
 
 
     public CommandHandler(Trivia i) {
@@ -89,6 +93,15 @@ public class CommandHandler implements CommandExecutor {
             return false;
         }
 
+        if (sender instanceof Player && main.getConfig().getInt("max_attempts") > 0) {
+            Player p = (Player) sender;
+            attempts.putIfAbsent(p, 1);
+            if (attempts.get(p) > main.getConfig().getInt("max_attempts")) {
+                utils.sendConfigMessage("no_more_attempts", p);
+                return false;
+            } else incrementAttempts(p);
+        }
+
         //Check if a question is active
         if (qh.isQuestionActive()) {
             //Build answer string from args
@@ -105,5 +118,15 @@ public class CommandHandler implements CommandExecutor {
             utils.sendConfigMessage("no_question", sender);
         }
         return false;
+    }
+
+    private void incrementAttempts(Player p) {
+        int temp = attempts.get(p);
+        attempts.remove(p);
+        attempts.put(p, temp + 1);
+    }
+
+    protected void clearAttempts() {
+        attempts.clear();
     }
 }

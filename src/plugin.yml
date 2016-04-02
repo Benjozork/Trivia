@@ -1,6 +1,6 @@
 name: Trivia
 author: Benjozork
-version: '1.2'
+version: '1.2.1'
 main: me.benjozork.trivia.Trivia
 softdepend: [PlaceholderAPI]
 commands:

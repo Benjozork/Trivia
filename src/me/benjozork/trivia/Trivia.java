@@ -6,6 +6,7 @@ import me.benjozork.trivia.utils.Utils;
 
 import me.clip.placeholderapi.PlaceholderAPI;
 import org.bukkit.Bukkit;
+import org.bukkit.command.CommandExecutor;
 import org.bukkit.entity.Player;
 import org.bukkit.plugin.java.JavaPlugin;
 
@@ -38,13 +39,17 @@ import java.util.logging.Logger;
 public class Trivia extends JavaPlugin {
 
     Logger log = Logger.getLogger("Minecraft");
+
     private QuestionHandler question_handler = new QuestionHandler(this);
+    private CommandHandler command_handler = new CommandHandler(this);
+
     private ConfigAccessor questions_config = new ConfigAccessor(this, "questions.yml");
     private ConfigAccessor player_data = new ConfigAccessor(this, "data.yml");
+
     private Utils utils = new Utils(this);
 
-    private int question_index;
     private List<List<String>> answers = new ArrayList<>();
+    private int question_index;
     private boolean enabled = true;
 
     @Override
@@ -64,7 +69,7 @@ public class Trivia extends JavaPlugin {
             log.info("[Trivia] Development version! Please send bug reports to GitHub!");
         }
 
-        getCommand("trivia").setExecutor(new CommandHandler(this));
+        getCommand("trivia").setExecutor(command_handler);
 
         Bukkit.getScheduler().runTaskTimer(this, new Runnable() {
             @Override
@@ -100,21 +105,25 @@ public class Trivia extends JavaPlugin {
         log.info("[Trivia] Disabled successfully.");
     }
 
-    public void reloadConfigs() {
+    protected void reloadConfigs() {
         reloadConfig();
         questions_config.reloadConfig();
         player_data.reloadConfig();
     }
 
-    public QuestionHandler getQuestionHandler() {
+    protected QuestionHandler getQuestionHandler() {
         return question_handler;
+    }
+
+    protected CommandHandler getCommandHandler() {
+        return command_handler;
     }
 
     public ConfigAccessor getDataConfig() {
         return player_data;
     }
 
-    public String toggle() {
+    protected String toggle() {
         enabled = !enabled;
         return enabled ? "toggle.enabled" : "toggle.disabled";
     }

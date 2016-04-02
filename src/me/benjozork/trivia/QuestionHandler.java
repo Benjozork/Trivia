@@ -47,12 +47,15 @@ public class QuestionHandler {
     }
 
     public void startQuestion(String q, List<String> a) {
+        // Clear player attempts count
+        main.getCommandHandler().clearAttempts();
+
         // If there is no winner (first question broadcasted)
         if (last_winner == null) {
             utils.broadcastConfigMessage("no_winner");
         }
 
-        // If we broadcast the answer, depending of if there was one and if it is enabled in the config
+        // If we broadcast the answer, depending on if there was one and if it is enabled in the config
         if (answers != null && main.getConfig().getBoolean("give_answer")) {
             if (main.getConfig().getBoolean("give_all_answers") && answers.size() > 1) {
                 StringBuilder sb = new StringBuilder();
@@ -79,16 +82,16 @@ public class QuestionHandler {
 
     public void winQuestion(CommandSender sender) {
         last_winner = sender.getName();
-        utils.sendConfigMessage("answer_correct", sender);
+        utils.sendConfigMessage("answer.correct", sender);
         utils.broadcastConfigMessage("winner_is", sender.getName());
 
         if (answers != null && main.getConfig().getBoolean("give_answer")) {
             if (main.getConfig().getBoolean("give_all_answers") && answers.size() > 1) {
                 StringBuilder sb = new StringBuilder();
                 for (int i = 0; i < answers.size() - 1; i++) {
-                    if (i == 0) sb.append(answers.get(i) + ", ");
-                    if (i > 0 && i < answers.size() - 1) sb.append(answers.get(i) + ", ");
-                    if (i == answers.size() - 1) sb.append(answers.get(i) + ".");
+                    if (i == 0) sb.append(answers.get(i)).append(", ");
+                    if (i > 0 && i < answers.size() - 1) sb.append(answers.get(i)).append(", ");
+                    if (i == answers.size() - 1) sb.append(answers.get(i)).append(".");
                 }
                 utils.broadcastConfigMessage("answers_were", sb.toString());
             } else {
@@ -125,7 +128,7 @@ public class QuestionHandler {
     }
 
     public void loseQuestion(CommandSender sender) {
-        utils.sendConfigMessage("answer_incorrect", sender);
+        utils.sendConfigMessage("answer.incorrect", sender);
     }
 
     public boolean isCorrect(String a) {
