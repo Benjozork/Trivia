@@ -17,7 +17,7 @@ messages: # All the plugin messages.
         no_permission_top: '&cYou have no pemrission to view the leaderboard!'
         no_permission_reload: '&cYou have no pemrission to relaod the configs!'
         no_permission_toggle: '&cYou have no pemrission to toggle the questions!'
-    plugin_info: '&aTrivia version 1.1 by &bBenjozork'
+    plugin_info: '&aTrivia version 1.3 by &bBenjozork'
     question_starting: '&aQuestion starting!'
     question_is: '&aThe question is: &b'
     reload_complete: '&aReload complete.'
@@ -27,6 +27,8 @@ messages: # All the plugin messages.
     top_players_header: '&aTop Trivia winners:'
     winner_is: '&aThe winner is: &b'
 
+answer_mode: delay # delay = wait 60 give 60 seconds to answer question, wait = wait for correct answer
+answer_cooldown: 0 # How many questions will the winner not be able to answer before being able to answer again. 0 = ignore
 delay: 60 # Time given to asnwer a question.
 give_answer: false # If the answer(s) are broadcasted when a question is won.
 give_all_answers: false # If all the possible answers are broadcasted.

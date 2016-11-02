@@ -93,17 +93,18 @@ public class CommandHandler implements CommandExecutor {
             return false;
         }
 
-        if (sender instanceof Player && main.getConfig().getInt("max_attempts") > 0) {
-            Player p = (Player) sender;
-            attempts.putIfAbsent(p, 1);
-            if (attempts.get(p) > main.getConfig().getInt("max_attempts")) {
-                utils.sendConfigMessage("no_more_attempts", p);
-                return false;
-            } else incrementAttempts(p);
-        }
-
         //Check if a question is active
         if (qh.isQuestionActive()) {
+            //Check if player has attempts left and increment that number
+            if (sender instanceof Player && main.getConfig().getInt("max_attempts") > 0) {
+                Player p = (Player) sender;
+                attempts.putIfAbsent(p, 1);
+                if (attempts.get(p) > main.getConfig().getInt("max_attempts")) {
+                    utils.sendConfigMessage("no_more_attempts", p);
+                    return false;
+                } else incrementAttempts(p);
+            }
+
             //Build answer string from args
             String answer = "";
             for (String s : args) answer += (" " + s);

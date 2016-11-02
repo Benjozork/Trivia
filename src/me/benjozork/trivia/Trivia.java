@@ -1,13 +1,12 @@
 package me.benjozork.trivia;
 
 import me.benjozork.trivia.utils.ConfigAccessor;
+import me.benjozork.trivia.utils.ConfigUpdater;
+import me.benjozork.trivia.utils.ConifgUpdater;
 import me.benjozork.trivia.utils.TriviaPlaceholderHook;
 import me.benjozork.trivia.utils.Utils;
 
-import me.clip.placeholderapi.PlaceholderAPI;
 import org.bukkit.Bukkit;
-import org.bukkit.command.CommandExecutor;
-import org.bukkit.entity.Player;
 import org.bukkit.plugin.java.JavaPlugin;
 
 import java.util.ArrayList;
@@ -59,6 +58,11 @@ public class Trivia extends JavaPlugin {
         player_data.saveDefaultConfig();
 
         getConfig().options().copyDefaults(true);
+
+        if (getConfig().getInt("config_version") < 2) {
+            log.info("[Trivia] Config is outdated. Trying to update...");
+            ConfigUpdater.updateConfig(getConfig());
+        }
 
         if (Bukkit.getServer().getPluginManager().isPluginEnabled("PlaceholderAPI")) {
             new TriviaPlaceholderHook(this).hook();

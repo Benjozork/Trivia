@@ -6,6 +6,7 @@ import org.bukkit.Bukkit;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
@@ -60,8 +61,7 @@ public class QuestionHandler {
             if (main.getConfig().getBoolean("give_all_answers") && answers.size() > 1) {
                 StringBuilder sb = new StringBuilder();
                 for (int i = 0; i < answers.size(); i++) {
-                    if (i == 0) sb.append(answers.get(i) + ", ");
-                    if (i > 0 && i < answers.size() - 1) sb.append(answers.get(i) + ", ");
+                    if (i < answers.size() - 1) sb.append(answers.get(i) + ", ");
                     if (i == answers.size() - 1) sb.append(answers.get(i) + ".");
                 }
                 utils.broadcastConfigMessage("answers_were", sb.toString());
@@ -70,6 +70,7 @@ public class QuestionHandler {
             }
         }
 
+        //Start new question
         this.last_winner = null;
         this.answers = a;
         this.questionActive = true;
@@ -99,11 +100,15 @@ public class QuestionHandler {
             }
         }
 
+        //Exeute the commands set in the config.
         if (sender instanceof Player) {
-            Bukkit.dispatchCommand(Bukkit.getConsoleSender(),
-                    main.getConfig().getString("command").replaceAll("%PLAYER%", sender.getName()));
+            List<String> commands = main.getConfig().getStringList("commands");
+            for (String s : commands) {
+                Bukkit.dispatchCommand(sender, s.replace("%player%", sender.getName()));
+            }
         }
 
+        //Store player stats
         Player cast_sender = null;
         UUID cast_sender_uuid = null;
 
