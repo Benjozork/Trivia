@@ -8,11 +8,30 @@ commands:
         description: Answer the trivia question.
         aliases: [tr]
 permissions:
+    trivia.player:
+        description: Permission package that allows a player to play Trivia.
+        children:
+            trivia.answer: true
+            trivia.top: true
+            trivia.question: true
+    trivia.*:
+        description: Allows an admin to control the plugin.
+        default: op
     trivia.answer:
         description: Allows the player to answer the Trivia question.
+    trivia.qustion:
+        description: Allows the player to view the current Trivia question.
     trivia.top:
         description: Allows the player to view the top Trivia players.
     trivia.reload:
         description: Allows the player to reload the Trivia config and data files.
     trivia.toggle:
         description: Allows the player to toggle the broadcasting of Trivia questions.
+    trivia.skip:
+        description: Allows the player to skip a certain question.
+    trivia.list:
+        description: Lists all the Trivia questions.
+    trivia.add:
+        description: Starts the Trivia question editor.
+    trivia.deleteall:
+        description: Allows the player to delete ALL Trivia questions.

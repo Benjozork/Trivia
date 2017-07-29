@@ -1,4 +1,4 @@
-package me.benjozork.trivia.utils;
+package me.benjozork.trivia.handlers;
 
 import me.benjozork.trivia.Trivia;
 

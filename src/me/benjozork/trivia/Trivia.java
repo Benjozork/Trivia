@@ -1,16 +1,18 @@
 package me.benjozork.trivia;
 
-import me.benjozork.trivia.utils.ConfigAccessor;
-import me.benjozork.trivia.utils.ConfigUpdater;
-import me.benjozork.trivia.utils.ConifgUpdater;
-import me.benjozork.trivia.utils.TriviaPlaceholderHook;
-import me.benjozork.trivia.utils.Utils;
+import me.benjozork.trivia.handlers.ChatCatchingHandler;
+import me.benjozork.trivia.handlers.CommandHandler;
+import me.benjozork.trivia.handlers.QuestionHandler;
+import me.benjozork.trivia.object.TriviaQuestion;
+import me.benjozork.trivia.handlers.ConfigAccessor;
+import me.benjozork.trivia.handlers.ConfigUpdater;
+import me.benjozork.trivia.handlers.MessageHandler;
+import me.benjozork.trivia.handlers.TriviaPlaceholderHook;
 
 import org.bukkit.Bukkit;
+import org.bukkit.configuration.serialization.ConfigurationSerialization;
 import org.bukkit.plugin.java.JavaPlugin;
 
-import java.util.ArrayList;
-import java.util.List;
 import java.util.logging.Logger;
 
 /**
@@ -37,32 +39,49 @@ import java.util.logging.Logger;
 
 public class Trivia extends JavaPlugin {
 
+    private static Trivia instance;
+
     Logger log = Logger.getLogger("Minecraft");
 
-    private QuestionHandler question_handler = new QuestionHandler(this);
-    private CommandHandler command_handler = new CommandHandler(this);
+    private QuestionHandler question_handler;
+    private CommandHandler command_handler;
 
-    private ConfigAccessor questions_config = new ConfigAccessor(this, "questions.yml");
-    private ConfigAccessor player_data = new ConfigAccessor(this, "data.yml");
+    public static ConfigAccessor messages_config;
+    public static ConfigAccessor questions_config;
+    public static ConfigAccessor player_data_config;
 
-    private Utils utils = new Utils(this);
-
-    private List<List<String>> answers = new ArrayList<>();
-    private int question_index;
-    private boolean enabled = true;
+    public boolean enabled = true;
 
     @Override
     public void onEnable() {
-        saveDefaultConfig();
-        questions_config.saveDefaultConfig();
-        player_data.saveDefaultConfig();
 
-        getConfig().options().copyDefaults(true);
+        Bukkit.getPluginManager().registerEvents(new ChatCatchingHandler(), this);
+
+        instance = (Trivia) Bukkit.getPluginManager().getPlugin("Trivia");
+
+        ConfigurationSerialization.registerClass(TriviaQuestion.class);
+
+        messages_config = new ConfigAccessor(getInstance(), "messages.yml");
+        questions_config = new ConfigAccessor(getInstance(), "questions.yml");
+        player_data_config = new ConfigAccessor(getInstance(), "data.yml");
+
+        //messages_config.getConfig().options().copyDefaults(true);
+
+        saveDefaultConfig();
+        messages_config.saveDefaultConfig();
+        questions_config.saveDefaultConfig();
+        player_data_config.saveDefaultConfig();
+
+        MessageHandler.setConfiguration(messages_config.getConfig());
 
         if (getConfig().getInt("config_version") < 2) {
             log.info("[Trivia] Config is outdated. Trying to update...");
-            ConfigUpdater.updateConfig(getConfig());
+            ConfigUpdater.updateConfig(getConfig(), getQuestionsConfig(), getMessagesConfig(), getDataConfig(), this);
         }
+
+        // Check for custom questions and generate UUIDs for them
+
+        ConfigUpdater.checkQuestionUUIDs(getQuestionsConfig());
 
         if (Bukkit.getServer().getPluginManager().isPluginEnabled("PlaceholderAPI")) {
             new TriviaPlaceholderHook(this).hook();
@@ -73,62 +92,56 @@ public class Trivia extends JavaPlugin {
             log.info("[Trivia] Development version! Please send bug reports to GitHub!");
         }
 
-        getCommand("trivia").setExecutor(command_handler);
+        command_handler = new CommandHandler(this);
 
-        Bukkit.getScheduler().runTaskTimer(this, new Runnable() {
-            @Override
-            public void run() {
-                answers = new ArrayList<>();
-                if (getConfig().getInt("minimum_players") <= getServer().getOnlinePlayers().size() && enabled) {
-                    if (question_index > questions_config.getConfig().getStringList("questions").size() - 1 || question_index > questions_config.getConfig().getList("answers").size() - 1) {
-                        question_index = 0;
-                    }
+        this.getCommand("trivia").setExecutor(command_handler);
+        this.getCommand("tr").setExecutor(command_handler);
 
-                    for (int i = 0; i < questions_config.getConfig().getStringList("answers").size(); i++) {
-                        answers.add (
-                                utils.processAnswerTable(questions_config.getConfig()
-                                .getStringList("answers").get(i))
-                        );
-                    }
+        QuestionHandler.start();
 
-                    question_handler.startQuestion (
-                            questions_config.getConfig().getStringList("questions").get(question_index),
-                            answers.get(question_index)
-                    );
-
-
-                    question_index++;
-                }
-            }
-        }, 0, getConfig().getLong("delay") * 20);
     }
 
     @Override
     public void onDisable() {
-        player_data.saveConfig();
+        player_data_config.saveConfig();
         log.info("[Trivia] Disabled successfully.");
     }
 
-    protected void reloadConfigs() {
-        reloadConfig();
-        questions_config.reloadConfig();
-        player_data.reloadConfig();
+    public static void reloadConfigs() {
+        Trivia.getInstance().reloadConfig();
+        getMessagesConfig().reloadConfig();
+        MessageHandler.setConfiguration(getMessagesConfig().getConfig());
+        getQuestionsConfig().reloadConfig();
+        ConfigUpdater.checkQuestionUUIDs(getQuestionsConfig());
+        getDataConfig().reloadConfig();
+        /*messages_config = new ConfigAccessor(getInstance(), "messages.yml");
+        questions_config = new ConfigAccessor(getInstance(), "questions.yml");
+        player_data_config = new ConfigAccessor(getInstance(), "data.yml");*/
     }
 
-    protected QuestionHandler getQuestionHandler() {
-        return question_handler;
-    }
-
-    protected CommandHandler getCommandHandler() {
+    public CommandHandler getCommandHandler() {
         return command_handler;
     }
 
-    public ConfigAccessor getDataConfig() {
-        return player_data;
+    public static ConfigAccessor getDataConfig() {
+        return player_data_config;
     }
 
-    protected String toggle() {
+    public static ConfigAccessor getQuestionsConfig() {
+        return questions_config;
+    }
+
+    public static ConfigAccessor getMessagesConfig() {
+        return messages_config;
+    }
+
+    public String toggle() {
         enabled = !enabled;
         return enabled ? "toggle.enabled" : "toggle.disabled";
     }
+
+    public static Trivia getInstance() {
+        return instance;
+    }
+
 }

@@ -1,4 +1,4 @@
-package me.benjozork.trivia.utils;
+package me.benjozork.trivia.handlers;
 
 /*
 * Copyright (C) 2012
@@ -24,6 +24,9 @@ package me.benjozork.trivia.utils;
 
 import java.io.File;
 import java.io.IOException;
+import java.io.InputStreamReader;
+import java.io.Reader;
+import java.io.UnsupportedEncodingException;
 import java.util.logging.Level;
 
 import org.bukkit.configuration.file.FileConfiguration;
@@ -41,25 +44,55 @@ public class ConfigAccessor {
     public ConfigAccessor(JavaPlugin plugin, String fileName) {
         if (plugin == null)
             throw new IllegalArgumentException("plugin cannot be null");
-        if (!plugin.isInitialized())
-            throw new IllegalArgumentException("plugin must be initialized");
+        /*if (!plugin.isInitialised())
+            throw new IllegalArgumentException("plugin must be enabled");*/
         this.plugin = plugin;
         this.fileName = fileName;
         File dataFolder = plugin.getDataFolder();
         if (dataFolder == null)
             throw new IllegalStateException();
         this.configFile = new File(plugin.getDataFolder(), fileName);
+
+        YamlConfiguration defConfig = null;
+        Reader defConfigStream = null;
+        try {
+            defConfigStream = new InputStreamReader(plugin.getResource(fileName), "UTF8");
+        } catch (UnsupportedEncodingException e) {
+            e.printStackTrace();
+        }
+        if (defConfigStream != null) {
+            defConfig = YamlConfiguration.loadConfiguration(defConfigStream);
+        }
+
+        fileConfiguration = YamlConfiguration.loadConfiguration(configFile);
+
+        for (String key : defConfig.getKeys(true)) {
+            if (! fileConfiguration.getKeys(true).contains(key)) {
+                fileConfiguration.set(key, defConfig.get(key));
+            }
+        }
+
+        saveConfig();
+
     }
 
     public void reloadConfig() {
+        if (configFile == null) {
+            configFile = new File(plugin.getDataFolder(), fileName);
+        }
         fileConfiguration = YamlConfiguration.loadConfiguration(configFile);
 
-        /*// Look for defaults in the jar
-        InputStream defConfigStream = plugin.getResource(fileName);
+        // Look for defaults in the jar
+        Reader defConfigStream = null;
+        try {
+            defConfigStream = new InputStreamReader(plugin.getResource(fileName), "UTF8");
+        } catch (UnsupportedEncodingException e) {
+            e.printStackTrace();
+        }
         if (defConfigStream != null) {
             YamlConfiguration defConfig = YamlConfiguration.loadConfiguration(defConfigStream);
             fileConfiguration.setDefaults(defConfig);
-        }*/
+        }
     }
 
     public FileConfiguration getConfig() {
@@ -82,9 +115,20 @@ public class ConfigAccessor {
     }
 
     public void saveDefaultConfig() {
+        if (configFile == null) {
+            configFile = new File(plugin.getDataFolder(), fileName);
+        }
         if (!configFile.exists()) {
             this.plugin.saveResource(fileName, false);
         }
+        /*
+            if (customConfigFile == null) {
+        customConfigFile = new File(getDataFolder(), "customConfig.yml");
+    }
+    if (!customConfigFile.exists()) {
+         plugin.saveResource("customConfig.yml", false);
+     }
+         */
     }
 
 }

@@ -1,4 +1,30 @@
 questions:
-- Give an example of a fruit.
-answers:
-- '[apple, banana, raspberry, strawbwerry]'
+- ==: TriviaQuestion
+  question_text: Give an example of a fruit.
+  answers:
+  - apple
+  - banana
+  - raspberry
+  - strawbwerry
+  winner_commands: []
+  uuid: 5acdd19f-b9d7-4c43-a9a0-3d2b656693bc
+- ==: TriviaQuestion
+  question_text: Give an example of a vegetable.
+  answers:
+  - celery
+  - carrot
+  - lettuce
+  - tomato
+  - cabbage
+  winner_commands: []
+  uuid: 8e4fae65-bfc7-4e24-9d48-98b0d5851038
+- ==: TriviaQuestion
+  question_text: Who is the president of the United States Of America ?
+  answers:
+  - Donald Trump
+  - Donald J Trump
+  - Donald J. Trump
+  - Donald
+  - Trump
+  winner_commands: []
+  uuid: f4d861a7-c793-4275-8a68-98504cd407dd

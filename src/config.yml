@@ -1,31 +1,6 @@
-## Config for Trivia 1.2.1, made by Benjozork.
+## Config for Trivia 1.3, made by Benjozork.
 
 command: 'give %PLAYER% apple 27' # The command to execute when a player wins a question.
-
-messages: # All the plugin messages.
-    answer:
-        correct: '&aCorrect!'
-        incorrect: '&cIncorrect! Better luck next time!'
-    answer_was: '&aThe answer was: &b'
-    answers_were: '&aThe possible answers were: &b'
-    global_prefix: '&b[Trivia]&r '
-    no_more_attempts: '&cYou reached your maximum amount of attempts.'
-    no_question: '&cNo question is active right now.'
-    no_winner: '&cNo winner in allowed time.'
-    permission:
-        no_permission_answer: '&cYou have no pemrission to answer the questions!'
-        no_permission_top: '&cYou have no pemrission to view the leaderboard!'
-        no_permission_reload: '&cYou have no pemrission to relaod the configs!'
-        no_permission_toggle: '&cYou have no pemrission to toggle the questions!'
-    plugin_info: '&aTrivia version 1.3 by &bBenjozork'
-    question_starting: '&aQuestion starting!'
-    question_is: '&aThe question is: &b'
-    reload_complete: '&aReload complete.'
-    toggle:
-        enabled: '&aTrivia questions &2enabled.'
-        disabled: '&aTrivia questions &cdisabled.'
-    top_players_header: '&aTop Trivia winners:'
-    winner_is: '&aThe winner is: &b'
 
 answer_mode: delay # delay = wait 60 give 60 seconds to answer question, wait = wait for correct answer
 answer_cooldown: 0 # How many questions will the winner not be able to answer before being able to answer again. 0 = ignore
@@ -35,5 +10,6 @@ give_all_answers: false # If all the possible answers are broadcasted.
 minimum_players: 0 # Minimum players needed for questions to be broadcasted. Set to 0 to ignore player count.
 max_attempts: 0 # How many time the player can get an answer wrong. Set to 0 to give unlimited attempts.
 max_leaderboard_entries: 10 # How many leaderboard entries are shown.
+broadcast_on_skip: true # Wether a message is broadcasted when a play skips the current question, the latter being configured in messages.yml.
 
-config_version: 1
+config_version: 3

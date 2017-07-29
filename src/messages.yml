@@ -1,0 +1,62 @@
+prefix: '&eTrivia >'
+answer:
+  correct: '&aCorrect!'
+  incorrect: '&cIncorrect! Better luck next time!'
+answer_was: '&aThe answer was: &b%answer%'
+answers_were: '&aThe possible answers were: &b%answers%'
+global_prefix: '&b[Trivia]&r '
+no_more_attempts: '&cYou have reached your maximum amount of attempts.'
+no_question: '&cNo question is active right now.'
+no_winner: '&cNo winner declared in allowed time.'
+permission:
+  no_permission_answer: '&cYou have no pemrission to answer the questions!'
+  no_permission_top: '&cYou have no pemrission to view the leaderboard!'
+  no_permission_reload: '&cYou have no pemrission to relaod the configs!'
+  no_permission_toggle: '&cYou have no pemrission to toggle the questions!'
+  no_permission_skip: '&cYou have no pemrission to skip questions!'
+  no_permission_add: '&cYou have no pemrission to add questions!'
+  no_permission_list: '&cYou have no pemrission to list questions!'
+  no_permission_deleteall: '&cYou have no pemrission to delete all the questions!'
+  no_permission_question: '&cYou have no pemrission to see the current question!'
+plugin_info: '&dTrivia version 1.3 by &bBenjozork'
+question_starting: '&aQuestion starting!'
+question_is: '&aThe question is: &b%question%'
+reload_complete: '&aReload complete.'
+toggle:
+  enabled: '&aTrivia questions &2enabled.'
+  disabled: '&aTrivia questions &cdisabled.'
+top_players_header: '&aTop Trivia winners:'
+winner_is: '&aThe winner is: &b%name%'
+skip: '&dQuestion skipped by &b%player%'
+add_question:
+  set_title: '&dPlease set the new question by sending it into the chat. You can exit
+    this utility at any time by sending "stop" or "cancel".'
+  title_set_success: '&aQuestion set.'
+  title_set_fail: '&cQuestion already exists. Please choose a new question.'
+  set_answers: '&dPlease send the question''s answers into chat, separated by a comma.'
+  answers_set_success: '&aAnswers added.'
+  set_commands: '&dPlease send all the commands to be executed into the chat, one
+    by one, WITHOUT a slash (/). You can use %player% as a placeholder to be replaced
+    by the winner''s name at time of execution. When done, please send "done" to confirm
+    your new question.'
+  command_added_success: '&aCommand added.'
+  done: '&aYour new question has been successfully registered into Trivia.'
+  aborted: '&aTrivia question editor exited. You may now use chat normally.'
+question_list_header: '&aList of loaded Trivia questions:'
+question_list_entry: ' &b- %question%'
+delete_all: '&cThis command will delete ALL Trivia questions currently registered.
+  This is NOT REVERSIBLE. Please use /trivia confirm with the console to confirm this
+  action.'
+confirm_console_only: '&cThe deleteall command can only be confirm via the console.'
+delete_all_success: '&aAll Trivia questions have been ereased.'
+nothing_to_confirm: '&cThere is nothing to confirm.'
+help:
+- '&eTrivia > &DVersion 1.3 by &bBenjozork'
+- ' &b- /trivia <answer>: &aAnswer the ongoing question'
+- ' &b- /trivia top: &aShows the list of top Trivia players'
+- ' &b- /trivia question: &aShows the current question'
+- ' &b- /trivia reload: &aReloads the configuration files'
+- ' &b- /trivia toggle: &aToggles Trivia on or off'
+- ' &b- /trivia list: &aLists loaded Trivia questions'
+- ' &b- /trivia add: &aStarts the Trivia question editor'
+- ' &b- /trivia deleteall: &aDeletes all Trivia questions'

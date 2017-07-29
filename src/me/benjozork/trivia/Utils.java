@@ -1,9 +1,10 @@
-package me.benjozork.trivia.utils;
+package me.benjozork.trivia;
 
 import me.benjozork.trivia.Trivia;
+import me.benjozork.trivia.handlers.ConfigAccessor;
+
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
-import org.bukkit.command.CommandException;
 import org.bukkit.command.CommandSender;
 
 import java.util.*;
@@ -33,29 +34,11 @@ import java.util.stream.Collectors;
 
 public class Utils {
 
-    private Trivia main;
-    private ConfigAccessor data;
-    private String prefix;
+    private static Trivia main = Trivia.getInstance();
+    private static ConfigAccessor data = Trivia.player_data_config;
+    private static String prefix = Trivia.messages_config.getConfig().getString("prefix");
 
-    public Utils(Trivia main) {
-        this.main = main;
-        this.data = main.getDataConfig();
-        prefix = main.getConfig().getString("messages.global_prefix");
-    }
-
-    public void sendConfigMessage(String path, CommandSender sender) {
-        sender.sendMessage(ChatColor.translateAlternateColorCodes('&', prefix + main.getConfig().getString("messages." + path)));
-    }
-
-    public void broadcastConfigMessage(String path) {
-        Bukkit.broadcastMessage(ChatColor.translateAlternateColorCodes('&', prefix + main.getConfig().getString("messages." + path)));
-    }
-
-    public void broadcastConfigMessage(String path, String append) {
-        Bukkit.broadcastMessage(ChatColor.translateAlternateColorCodes('&', prefix + main.getConfig().getString("messages." + path) + append));
-    }
-
-    public List<String> processAnswerTable(String ls) {
+    public static List<String> processAnswerTable(String ls) {
         List<String> result = new ArrayList<>();
 
         ls = ls.replace("[", "");
@@ -68,14 +51,28 @@ public class Utils {
         return result;
     }
 
-    public void displayTopPlayersTable(CommandSender sender) {
-        HashMap<String, Integer> player_data = new HashMap<>();
+    public static void displayTopPlayersTable(CommandSender sender) {
+        HashMap<String, HashMap<String, Integer>> raw_data = new HashMap<>();
 
         for (String s : data.getConfig().getKeys(false)) {
-            player_data.put(s, data.getConfig().getInt(s));
+            HashMap<String, Integer> individualQuestionResults = new HashMap<>();
+            for (String s1 : data.getConfig().getConfigurationSection(s).getKeys(true)) {
+                individualQuestionResults.put(s1, data.getConfig().getInt(s + "." + s1));
+            }
+            raw_data.put(s, individualQuestionResults);
         }
 
-        final List<String> sorted_players = player_data.entrySet().stream()
+        HashMap<String, Integer> totals = new HashMap<String, Integer>();
+
+        for (String s : raw_data.keySet()) {
+            int total = 0;
+            for (Map.Entry<String, Integer> hashMap : raw_data.get(s).entrySet()) {
+                total += hashMap.getValue();
+            }
+            totals.put(s, total);
+        }
+
+        final List<String> sorted_players = totals.entrySet().stream()
                 .sorted((e1, e2) -> e2.getValue().compareTo(e1.getValue()))
                 .map(Map.Entry::getKey)
                 .collect(Collectors.toList());
@@ -99,10 +96,15 @@ public class Utils {
                     + player_name
                     + ChatColor.GREEN
                     + " ("
-                    + player_data.get(s)
+                    + totals.get(s)
                     + ")"
             );
             count++;
         }
     }
+
+    public static void sendJSONMessage(String player, String jsonmsg) {
+        Bukkit.getServer().dispatchCommand(Bukkit.getConsoleSender(), "tellraw " + player + " " + jsonmsg);
+    }
+
 }
