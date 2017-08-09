@@ -11,13 +11,33 @@ import me.benjozork.trivia.Utils;
 import me.benjozork.trivia.object.TriviaQuestion;
 
 /**
- * Created by Benjozork on 2016-11-02.
- */
+ * @author Benjozork
+
+    The MIT License (MIT)
+
+    Copyright (c) 2016-2017 Benjozork
+
+    Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated
+    documentation files (the "Software"), to deal in the Software without restriction, including without limitation the
+    rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of the Software, and to
+    permit persons to whom the Software is furnished to do so, subject to the following conditions:
+
+    The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
+
+    THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND,
+    EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+    FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT
+    HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF
+    CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR
+    THE USE OR OTHER DEALINGS IN THE SOFTWARE.
+ **/
 public class ConfigUpdater {
 
-    public static void updateConfig(FileConfiguration config, ConfigAccessor questionsConfig, ConfigAccessor messagesConfig, ConfigAccessor playerDataConfig, Trivia trivia) {
+    public static void updateConfigs(FileConfiguration config, ConfigAccessor questionsConfig, ConfigAccessor messagesConfig, ConfigAccessor playerDataConfig, Trivia trivia) {
 
         if (config.getInt("config_version") == 1) {
+
+            System.out.println("[Trivia] >> Version 2 update starting...");
 
             Trivia.getInstance().getLogger().info(">>> Converting command to list format...");
 
@@ -57,6 +77,10 @@ public class ConfigUpdater {
                 newQuestions.add(tmp);
             }
 
+            config.set("commands", null);
+            config.set("command", null);
+            Trivia.getInstance().saveConfig();
+
             questionsConfig.getConfig().set("questions", newQuestions);
             questionsConfig.getConfig().set("answers", null);
 
@@ -73,6 +97,32 @@ public class ConfigUpdater {
             }
 
             playerDataConfig.saveConfig();
+
+            System.out.println("[Trivia] >>> Success !");
+
+        }
+
+        if (config.getInt("config_version") == 2) {
+
+            System.out.println("[Trivia] >> Version 3 update starting...");
+
+            System.out.println("[Trivia] >>> Adding random command capability support...");
+
+            List<TriviaQuestion> configQuestions = (ArrayList<TriviaQuestion>) questionsConfig.getConfig().get("questions");
+
+            for (TriviaQuestion question : configQuestions) {
+                question.randomCommands = false;
+                question.randomCommandsCount = 2;
+            }
+
+            questionsConfig.getConfig().set("questions", configQuestions);
+            questionsConfig.saveConfig();
+
+            config.set("config_version", 3);
+
+            Trivia.getInstance().saveConfig();
+
+            System.out.println("[Trivia] >>> Success !");
 
         }
 

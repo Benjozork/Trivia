@@ -1,6 +1,6 @@
 name: Trivia
 author: Benjozork
-version: '1.3'
+version: '1.4'
 main: me.benjozork.trivia.Trivia
 softdepend: [PlaceholderAPI]
 commands:
@@ -35,3 +35,5 @@ permissions:
         description: Starts the Trivia question editor.
     trivia.deleteall:
         description: Allows the player to delete ALL Trivia questions.
+    trivia.config:
+        description: Allows the player to configure Trivia parameters from the game.

@@ -1,9 +1,7 @@
-## Config for Trivia 1.3, made by Benjozork.
+## Config for Trivia 1.4pr1-DEV, made by Benjozork.
 
 command: 'give %PLAYER% apple 27' # The command to execute when a player wins a question.
 
-answer_mode: delay # delay = wait 60 give 60 seconds to answer question, wait = wait for correct answer
-answer_cooldown: 0 # How many questions will the winner not be able to answer before being able to answer again. 0 = ignore
 delay: 60 # Time given to asnwer a question.
 give_answer: false # If the answer(s) are broadcasted when a question is won.
 give_all_answers: false # If all the possible answers are broadcasted.
@@ -11,5 +9,6 @@ minimum_players: 0 # Minimum players needed for questions to be broadcasted. Set
 max_attempts: 0 # How many time the player can get an answer wrong. Set to 0 to give unlimited attempts.
 max_leaderboard_entries: 10 # How many leaderboard entries are shown.
 broadcast_on_skip: true # Wether a message is broadcasted when a play skips the current question, the latter being configured in messages.yml.
+search_for_answers_in_chat: false # This, if set to true, will search for answers in the chat rather than with /trivia <answer>.
 
 config_version: 3
